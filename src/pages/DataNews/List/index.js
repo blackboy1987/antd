@@ -11,7 +11,6 @@ import {
   Icon,
   Button,
   DatePicker,
-  Divider,
   TreeSelect,
   Modal,
   message,
@@ -95,9 +94,55 @@ class Index extends PureComponent {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.handleUpdateModalVisible(true, record)}>配置</a>
-          <Divider type="vertical" />
-          <a href="">订阅警报</a>
+          {record.mediaTypeName === '普通' ? (
+            <a
+              onClick={e => e.stopPropagation()}
+              href={`https://ypapp.cnnb.com.cn/yppage/index.html#/qf/news_detail?newsId=${
+                record.id
+              }`}
+              rel="noreferrer"
+            >
+              预览
+            </a>
+          ) : null}
+          {record.mediaTypeName === '外链' ? (
+            <a onClick={e => e.stopPropagation()} href={`${record.contentUrl}`} rel="noreferrer">
+              预览
+            </a>
+          ) : null}
+          {record.mediaTypeName === '图片' ? (
+            <a
+              onClick={e => e.stopPropagation()}
+              href={`https://ypapp.cnnb.com.cn/yppage/index.html#/qf/picture_detail?newsId=${
+                record.id
+              }`}
+              rel="noreferrer"
+            >
+              预览
+            </a>
+          ) : null}
+          {record.mediaTypeName === '视频' ? (
+            <a
+              onClick={e => e.stopPropagation()}
+              href={`https://ypapp.cnnb.com.cn/yppage/index.html#/qf/video_detail?newsId=${
+                record.id
+              }`}
+              rel="noreferrer"
+            >
+              预览
+            </a>
+          ) : null}
+          {record.mediaTypeName === '直播新闻' ? (
+            <a
+              onClick={e => e.stopPropagation()}
+              href={`https://ypapp.cnnb.com.cn/yppage/index.html#/qf/live_detail?newsId=${
+                record.id
+              }`}
+              rel="noreferrer"
+            >
+              预览
+            </a>
+          ) : null}
         </Fragment>
       ),
     },
