@@ -192,3 +192,35 @@ export const importCDN = (url, name) =>
     };
     document.head.appendChild(dom);
   });
+
+/**
+ * 格式化区间时间
+ *
+ * @param rangeDate
+ *    时间。该参数应该是一个长度为2的数组
+ * @returns {Array}
+ *    格式化之后的时间数组
+ */
+export function formatRangeDate(rangeDate) {
+  const arr = {};
+  if (rangeDate) {
+    return {
+      beginDate: rangeDate[0] && rangeDate[0].format('YYYY-MM-DD 00:00:00'),
+      endDate: rangeDate[1] && rangeDate[1].format('YYYY-MM-DD 00:00:00'),
+    };
+  }
+  return arr;
+}
+
+/**
+ * 格式化时间
+ * @param date
+ *    moment对象
+ * @param format
+ *    需要格式化的时间
+ * @returns {*}
+ *    格式话之后的时间字符串
+ */
+export function formatDate(date, format) {
+  return date && date.format(format || 'YYYY-MM-DD HH:mm:ss');
+}
