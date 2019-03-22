@@ -265,6 +265,40 @@ export default [
         ],
       },
       {
+        path: '/dataNews',
+        icon: 'dataNews',
+        name: 'dataNews',
+        routes: [
+          {
+            path: '/dataNews',
+            component: './DataNews/List',
+          },
+        ],
+      },
+      {
+        path: '/sms',
+        icon: 'sms',
+        name: 'sms',
+        routes: [
+          {
+            path: '/sms',
+            component: './Log/Sms',
+          },
+        ],
+      },
+      {
+        path: '/dataVote',
+        icon: 'dataVote',
+        name: 'dataVote',
+        routes: [
+          {
+            path: '/dataVote',
+            component: './DataVote',
+          },
+        ],
+      },
+
+      {
         component: '404',
       },
     ],

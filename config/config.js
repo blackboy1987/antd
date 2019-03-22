@@ -64,6 +64,7 @@ export default {
   define: {
     APP_TYPE: APP_TYPE || '',
   },
+  base: '/yongpai/page/',
   treeShaking: true,
   targets: {
     ie: 11,
