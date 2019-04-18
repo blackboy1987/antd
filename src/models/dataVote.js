@@ -1,4 +1,13 @@
-import { list, remove, download } from '@/services/dataVote';
+import {
+  list,
+  remove,
+  download,
+  save,
+  edit,
+  updateDataVote,
+  view,
+  download1,
+} from '@/services/dataVote';
 
 export default {
   namespace: 'dataVote',
@@ -10,6 +19,7 @@ export default {
       pageSize: 20,
       total: 0,
     },
+    values: {},
   },
 
   effects: {
@@ -32,6 +42,42 @@ export default {
         callback(response);
       }
     },
+    *save({ payload, callback }, { call }) {
+      const response = yield call(save, payload);
+      if (callback) {
+        callback(response);
+      }
+    },
+
+    *edit({ payload, callback }, { call, put }) {
+      const response = yield call(edit, payload);
+      if (callback) {
+        callback(response);
+      }
+      yield put({
+        type: 'editInfo',
+        payload: response,
+      });
+    },
+
+    *updateDataVote({ payload, callback }, { call }) {
+      const response = yield call(updateDataVote, payload);
+      if (callback) {
+        callback(response);
+      }
+    },
+    *view({ payload, callback }, { call }) {
+      const response = yield call(view, payload);
+      if (callback) {
+        callback(response);
+      }
+    },
+    *download1({ payload, callback }, { call }) {
+      const response = yield call(download1, payload);
+      if (callback) {
+        callback(response);
+      }
+    },
   },
 
   reducers: {
@@ -39,6 +85,12 @@ export default {
       return {
         ...state,
         data: action.payload,
+      };
+    },
+    editInfo(state, action) {
+      return {
+        ...state,
+        values: action.payload,
       };
     },
   },
