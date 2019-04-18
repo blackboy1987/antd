@@ -2,11 +2,12 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
 import { Row, Col, Card, Form, Input, Button, Divider, Table, Badge, Radio } from 'antd';
-import StandardTable from '@/components/StandardTable1';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-
+import StandardTable from '@/components/StandardTable5';
+import GridContent from '@/components/PageHeaderWrapper/GridContent';
+import Link from 'umi/link';
 import styles from './index.less';
 import { formatRangeDate } from '@/utils/utils';
+import DataVoteView from './DataVoteView';
 
 const FormItem = Form.Item;
 const getValue = obj =>
@@ -22,6 +23,8 @@ const getValue = obj =>
 class DataVote extends PureComponent {
   state = {
     selectedRows: [],
+    dataVoteViewModalVisible: false,
+    dataVoteId: 0,
   };
 
   columns = [
@@ -62,15 +65,27 @@ class DataVote extends PureComponent {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <Button size="small" onClick={e => this.download(e, `${record.newsid}`, 0)}>
-            导出
-          </Button>
+          <span
+            className="pailian-icon pailian-icon-xiazai"
+            onClick={e => this.download(e, `${record.newsid}`, 0)}
+            title="导出"
+          />
+          <Divider type="vertical" />
+          <Link to={`/dataVote/edit/${record.id}`}>
+            <span
+              className="pailian-icon pailian-icon-edit"
+              title="编辑"
+              style={{ color: 'green' }}
+            />
+          </Link>
           {record.newsid ? null : (
             <Fragment>
               <Divider type="vertical" />
-              <Button size="small" onClick={e => this.remove(e, `${record.id}`, 0)}>
-                删除
-              </Button>
+              <span
+                className="pailian-icon pailian-icon-shanchu"
+                onClick={e => this.remove(e, `${record.id}`, 0)}
+                title="删除"
+              />
             </Fragment>
           )}
         </Fragment>
@@ -96,6 +111,11 @@ class DataVote extends PureComponent {
         dataIndex: 'voteMax',
       },
       {
+        title: '状态',
+        dataIndex: 'enable',
+        render: text => (text ? '启用' : '禁用'),
+      },
+      {
         title: '序号',
         dataIndex: 'orderno',
       },
@@ -103,15 +123,31 @@ class DataVote extends PureComponent {
         title: '操作',
         render: (text, record1) => (
           <Fragment>
-            <Button size="small" onClick={e => this.download(e, `${record1.id}`, 2)}>
-              导出
-            </Button>
+            <span
+              className="pailian-icon pailian-icon-xiazai"
+              onClick={e => this.download(e, `${record1.id}`, 2)}
+              title="导出"
+            />
+            <Divider type="vertical" />
+            <span
+              className="pailian-icon pailian-icon-yulan"
+              onClick={e => this.view(e, `${record1.id}`)}
+              title="查看"
+            />
           </Fragment>
         ),
       },
     ];
 
-    return <Table columns={columns1} dataSource={record.dataVotes} pagination={false} />;
+    return (
+      <Table
+        columns={columns1}
+        size="small"
+        rowClassName={styles.dataVote_2}
+        dataSource={record.dataVotes}
+        pagination={false}
+      />
+    );
   };
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
@@ -199,6 +235,21 @@ class DataVote extends PureComponent {
     });
   };
 
+  view = (e, id) => {
+    e.stopPropagation();
+    this.setState({
+      dataVoteViewModalVisible: true,
+      dataVoteId: id,
+    });
+  };
+
+  onClose = () => {
+    this.setState({
+      dataVoteViewModalVisible: false,
+      dataVoteId: '',
+    });
+  };
+
   remove = (e, id, type) => {
     e.stopPropagation();
     const { dispatch } = this.props;
@@ -261,28 +312,47 @@ class DataVote extends PureComponent {
     const {
       dataVote: { data },
       loading,
+      dispatch,
     } = this.props;
-    const { selectedRows } = this.state;
+    const { selectedRows, dataVoteViewModalVisible, dataVoteId } = this.state;
 
     return (
-      <PageHeaderWrapper>
+      <GridContent>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
+            <div className={styles.tableListOperator}>
+              <Link to="/dataVote/add">
+                <Button icon="plus" type="primary">
+                  添加
+                </Button>
+              </Link>
+            </div>
             <StandardTable
               selectedRows={selectedRows}
               loading={loading}
+              rowKey="id"
               data={data}
+              rowClassName={styles.dataVote_1}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
               bordered
+              size="small"
               expandRowByClick
               expandedRowRender={this.expandedRowRender}
             />
           </div>
+          {dataVoteId ? (
+            <DataVoteView
+              onCancel={this.onClose}
+              visible={dataVoteViewModalVisible}
+              id={dataVoteId}
+              dispatch={dispatch}
+            />
+          ) : null}
         </Card>
-      </PageHeaderWrapper>
+      </GridContent>
     );
   }
 }
