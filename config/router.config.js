@@ -20,7 +20,7 @@ export default [
   // app
   {
     path: '/',
-    component: '../layouts/BasicLayout',
+    component: '../layouts/BlankLayout',
     Routes: ['src/pages/Authorized'],
     routes: [
       // dashboard
@@ -298,9 +298,58 @@ export default [
             path: '/dataVote',
             component: './DataVote',
           },
+          {
+            path: '/dataVote/add',
+            component: './DataVote/Add',
+          },
+          {
+            path: '/dataVote/edit/:id',
+            component: './DataVote/Add',
+          },
+        ],
+      },
+      {
+        path: '/material',
+        icon: 'material',
+        name: 'material',
+        routes: [
+          {
+            path: '/material',
+            component: './Material/List',
+          },
+          {
+            path: '/material/select',
+            component: './Material/Select',
+          },
+        ],
+      },
+      {
+        path: '/channel',
+        icon: 'channel',
+        name: 'channel',
+        routes: [
+          {
+            path: '/channel',
+            component: './Plugin/Channel/List',
+          },
+          {
+            path: '/channel/setting/:id',
+            component: './Plugin/Channel/GuangDian',
+          },
         ],
       },
 
+      {
+        path: '/dataComments',
+        icon: 'dataComments',
+        name: 'dataComments',
+        routes: [
+          {
+            path: '/dataComments',
+            component: './DataComments/List',
+          },
+        ],
+      },
       {
         component: '404',
       },
