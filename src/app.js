@@ -1,4 +1,5 @@
 import fetch from 'dva/fetch';
+import Constants from './utils/constants';
 
 export const dva = {
   config: {
@@ -30,7 +31,8 @@ export function patchRoutes(routes) {
 }
 
 export function render(oldRender) {
-  fetch('/api/auth_routes')
+  console.log(`${Constants.baseUrl}`);
+  fetch(`${Constants.baseUrl}auth_routes`)
     .then(res => res.json())
     .then(
       ret => {
